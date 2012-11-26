@@ -17,7 +17,7 @@ grunt.loadNpmTasks('grunt-hogan-client');
 ## Example
 given the following config and template
 ### config
-```json
+```javascript
   hoganclient: {
     options: {
       variable: 'window.tmpl'
