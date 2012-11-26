@@ -11,7 +11,7 @@ module.exports = function(grunt) {
   "use strict";
 
   grunt.util = grunt.util || grunt.utils;
-  
+
   var path = require('path'),
       fs = require('fs'),
       cleaner = /^\s+|\s+$|[\r?\n]+/gm;
@@ -42,18 +42,20 @@ module.exports = function(grunt) {
     var src = '';
 
     options = grunt.utils._.defaults(options || {}, {
-      variable: 'tmpl',
+      variable: 'window.tmpl',
       ext: 'hogan'
     });
 
-    src += options.variable.indexOf('.') === -1 ? 'var ' + options.variable : options.variable;
-    src += '={};' + grunt.utils.linefeed;
+    src += '(function compileHoganTemplates() {' + grunt.utils.linefeed;
+    src += '  ' + options.variable + '=' + options.variable + '||{};' + grunt.utils.linefeed;
 
     files.map(function(filepath) {
       var name = path.basename(filepath, '.' + options.ext);
       var file = grunt.file.read(filepath).replace(cleaner, '');
-      src += options.variable + '.' + name + '=Hogan.compile(\'' + file + '\');' + grunt.utils.linefeed;
+      src += '  ' + options.variable + '.' + name + '=Hogan.compile(\'' + file + '\');' + grunt.utils.linefeed;
     });
+
+    src += '}());' + grunt.utils.linefeed;
 
     return src;
   });

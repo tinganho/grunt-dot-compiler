@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     },
 
     lint: {
-      files: ['grunt.js', 'tasks/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'tasks/**/*.js', 'test/hogan-client_test.js']
     },
 
     watch: {
@@ -49,7 +49,8 @@ module.exports = function(grunt) {
       },
       globals: {
         Hogan: true,
-        foo: true
+        foo: true,
+        window: true
       }
     }
   });

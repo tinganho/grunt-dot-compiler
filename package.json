@@ -1,23 +1,23 @@
 {
   "name": "grunt-hogan-client",
-  "description": "The best sample grunt tasks ever.",
+  "description": "compiles hogan templates into ready to use includes",
   "version": "0.1.0",
-  "homepage": "https://github.com/markus.ullmark/grunt-hogan-client",
+  "homepage": "https://github.com/ullmark/grunt-hogan-client",
   "author": {
     "name": "Markus Ullmark",
     "email": "ullmark@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/markus.ullmark/grunt-hogan-client.git"
+    "url": "git://github.com/ullmark/grunt-hogan-client.git"
   },
   "bugs": {
-    "url": "https://github.com/markus.ullmark/grunt-hogan-client/issues"
+    "url": "https://github.com/ullmark/grunt-hogan-client/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/markus.ullmark/grunt-hogan-client/blob/master/LICENSE-MIT"
+      "url": "https://github.com/ullmark/grunt-hogan-client/blob/master/LICENSE-MIT"
     }
   ],
   "main": "grunt.js",
@@ -33,6 +33,8 @@
     "grunt-contrib-clean": "~0.3.1"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "hogan",
+    "templates"
   ]
 }

@@ -1,6 +1,6 @@
 # grunt-hogan-client
 
-> Compile Hogan Templates into ready to use client side script files.
+> Compile Hogan Templates into ready to use script include.
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan-client`
@@ -14,8 +14,52 @@ grunt.loadNpmTasks('grunt-hogan-client');
 [grunt]: http://gruntjs.com/
 [getting_started]: https://github.com/gruntjs/grunt/blob/master/docs/getting_started.md
 
-## Documentation
-_(Coming soon)_
+## Example
+given the following config and template
+### config
+```json
+  hoganclient: {
+    options: {
+      variable: 'window.tmpl'
+    }
+    src: ['templates/**/*.hogan'],
+    dest: 'dist/tmpl.js' 
+  }
+```
+### templates
+#### templates/item.hogan
+```html
+<li>
+  <h2>{{title}}<h2>
+  <p>{{text}}</p>
+</li>
+```
+#### templates/list.hogan
+```html
+<ul id="a-list">
+{{#items}}
+  {{>item}}
+{{/items}}
+</ul>
+```
+
+will output the following script file
+#### dist/tmpl.js
+```javascript
+(function compileHoganTemplates() {
+  window.tmpl=window.tmpl||{};
+  window.tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
+  window.tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
+}());
+```
+ready to use/include/concat etc in your app like this.
+
+```javascript
+tmpl.list.render({ items: [] });
+```
+
+## Todo
+I guess there will be need to tweek the regex that cleans the template.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
