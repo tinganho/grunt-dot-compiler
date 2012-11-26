@@ -1,6 +1,6 @@
 # grunt-hogan-client
 
-The best sample grunt tasks ever.
+> Compile Hogan Templates into ready to use client side script files.
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan-client`
