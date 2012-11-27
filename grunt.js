@@ -58,8 +58,8 @@ module.exports = function(grunt) {
   // Load local tasks.
   grunt.loadTasks('tasks');
 
-  // The clean plugin helps in testing.
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-bump');
 
   // Default task.
   grunt.registerTask('default', 'lint hoganclient test');

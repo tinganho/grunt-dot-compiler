@@ -1,7 +1,7 @@
 {
   "name": "grunt-hogan-client",
   "description": "compiles hogan templates into ready to use includes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/ullmark/grunt-hogan-client",
   "author": {
     "name": "Markus Ullmark",
@@ -30,7 +30,8 @@
   },
   "devDependencies": {
     "grunt": "~0.3.17",
-    "grunt-contrib-clean": "~0.3.1"
+    "grunt-contrib-clean": "~0.3.1",
+    "grunt-bump": "0.0.1"
   },
   "keywords": [
     "gruntplugin",

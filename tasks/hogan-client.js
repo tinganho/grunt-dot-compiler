@@ -42,16 +42,15 @@ module.exports = function(grunt) {
     var src = '';
 
     options = grunt.utils._.defaults(options || {}, {
-      variable: 'window.tmpl',
-      ext: 'hogan'
+      variable: 'window.tmpl'
     });
 
     src += '(function compileHoganTemplates() {' + grunt.utils.linefeed;
     src += '  ' + options.variable + '=' + options.variable + '||{};' + grunt.utils.linefeed;
 
     files.map(function(filepath) {
-      var name = path.basename(filepath, '.' + options.ext);
-      var file = grunt.file.read(filepath).replace(cleaner, '');
+      var name = path.basename(filepath, path.extname(filepath));
+      var file = grunt.file.read(filepath).replace(cleaner, '').replace(/'/, '\'');
       src += '  ' + options.variable + '.' + name + '=Hogan.compile(\'' + file + '\');' + grunt.utils.linefeed;
     });
 
