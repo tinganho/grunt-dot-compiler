@@ -5,10 +5,12 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    hoganclient: {
+    templateclient: {
       namespaced: {
         options: {
-          variable: 'foo.tmpl'
+          variable: 'foo.tmpl',
+          prefix: 'new Ext.XTemplate(',
+          suffix: ')'
         },
         src: ['test/templates/**/*.hogan'],
         dest: 'test/tmp/foo.js'
@@ -20,11 +22,11 @@ module.exports = function(grunt) {
     },
 
     test: {
-      files: ['test/hogan-client_test.js']
+      files: ['test/template-client_test.js']
     },
 
     lint: {
-      files: ['grunt.js', 'tasks/**/*.js', 'test/hogan-client_test.js']
+      files: ['grunt.js', 'tasks/**/*.js', 'test/template-client_test.js']
     },
 
     watch: {
@@ -62,6 +64,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bump');
 
   // Default task.
-  grunt.registerTask('default', 'lint hoganclient test');
+  grunt.registerTask('default', 'lint templateclient test');
 
 };

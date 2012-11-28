@@ -1,15 +1,15 @@
 {
-  "name": "grunt-hogan-client",
-  "description": "compiles hogan templates into ready to use includes",
-  "version": "0.1.1",
-  "homepage": "https://github.com/ullmark/grunt-hogan-client",
+  "name": "grunt-template-client",
+  "description": "compiles any and all templates into ready to use includes",
+  "version": "0.2.0",
+  "homepage": "https://github.com/alanshaw/grunt-template-client",
   "author": {
-    "name": "Markus Ullmark",
-    "email": "ullmark@gmail.com"
+    "name": "Markus Ullmark / Alan Shaw",
+    "email": "ullmark@gmail.com / alan138@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ullmark/grunt-hogan-client.git"
+    "url": "git://github.com:alanshaw/grunt-template-client.git"
   },
   "bugs": {
     "url": "https://github.com/ullmark/grunt-hogan-client/issues"
@@ -21,7 +21,7 @@
     }
   ],
   "main": "grunt.js",
-  "bin": "bin/grunt-hogan-client",
+  "bin": "bin/grunt-template-client",
   "engines": {
     "node": "*"
   },
@@ -36,6 +36,7 @@
   "keywords": [
     "gruntplugin",
     "hogan",
+    "template",
     "templates"
   ]
 }

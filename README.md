@@ -1,14 +1,14 @@
-# grunt-hogan-client
+# grunt-template-client
 
-> Compile Hogan Templates into ready to use script include.
+> Compile any and all templates into a ready to use script include.
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan-client`
+Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-template-client`
 
 Then add this line to your project's `grunt.js` gruntfile:
 
 ```javascript
-grunt.loadNpmTasks('grunt-hogan-client');
+grunt.loadNpmTasks('grunt-template-client');
 ```
 
 [grunt]: http://gruntjs.com/
@@ -18,9 +18,11 @@ grunt.loadNpmTasks('grunt-hogan-client');
 given the following config and template
 ### config
 ```javascript
-  hoganclient: {
+  templateclient: {
     options: {
       variable: 'window.tmpl'
+      prefix: 'Hogan.compile(',
+      suffix: ')'
     }
     src: ['templates/**/*.hogan'],
     dest: 'dist/tmpl.js' 
@@ -65,7 +67,8 @@ I guess there will be need to tweek the regex that cleans the template.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
-_(Nothing yet)_
+0.2.0 - Forked from https://github.com/ullmark/grunt-hogan-client to make generic.
+0.1.1 - Initial release
 
 ## License
 Copyright (c) 2012 Markus Ullmark  
