@@ -67,8 +67,8 @@ I guess there will be need to tweek the regex that cleans the template.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
-0.2.0 - Forked from https://github.com/ullmark/grunt-hogan-client to make generic.
-0.1.1 - Initial release
+* 0.2.0 - Forked from https://github.com/ullmark/grunt-hogan-client to make generic.
+* 0.1.1 - Initial release
 
 ## License
 Copyright (c) 2012 Markus Ullmark  
