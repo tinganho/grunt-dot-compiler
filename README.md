@@ -48,7 +48,7 @@ given the following config and template
 will output the following script file
 #### dist/tmpl.js
 ```javascript
-(function compileHoganTemplates() {
+(function compileTemplates() {
   window.tmpl=window.tmpl||{};
   window.tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
   window.tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
