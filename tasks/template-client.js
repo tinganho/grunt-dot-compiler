@@ -11,10 +11,12 @@ module.exports = function(grunt) {
 	"use strict";
 
 	grunt.util = grunt.util || grunt.utils;
+	
+	var _ = grunt.utils._;
 
 	var path = require('path'),
-			fs = require('fs'),
-			cleaner = /^\s+|\s+$|[\r?\n]+/gm;
+		fs = require('fs'),
+		cleaner = /^\s+|\s+$|[\r?\n]+/gm;
 
 	// Please see the grunt documentation for more information regarding task and
 	// helper creation: https://github.com/gruntjs/grunt/blob/master/docs/toc.md
@@ -39,26 +41,40 @@ module.exports = function(grunt) {
 	// ==========================================================================
 
 	grunt.registerHelper('templateclient', function(files, options) {
-		var src = '';
+		var js = '';
 
-		options = grunt.utils._.defaults(options || {}, {
-			variable: 'window.tmpl',
+		options = _.defaults(options || {}, {
+			variable: 'tmpl',
+			key: function(filepath) {
+				return path.basename(filepath, path.extname(filepath));
+			},
 			prefix: 'Hogan.compile(',
 			suffix: ')'
 		});
+		
+		options.variable = options.variable.replace('window.', '');
 
-		src += '(function compileTemplates() {' + grunt.utils.linefeed;
-		src += '	' + options.variable + '=' + options.variable + '||{};' + grunt.utils.linefeed;
-
+		js += '(function compileTemplates() {' + grunt.utils.linefeed;
+		
+		var currentVar = 'window';
+		var variables = options.variable.split('.');
+		
+		_.each(variables, function(v) {
+			currentVar = currentVar + '.' + v;
+			js += '	' + currentVar + '=' + currentVar + '||{};' + grunt.utils.linefeed;
+		});
+		
 		files.map(function(filepath) {
-			var name = path.basename(filepath, path.extname(filepath));
-			var file = grunt.file.read(filepath).replace(cleaner, '').replace(/'/, '\'');
-			src += '	' + options.variable + '.' + name + '='+options.prefix+'\'' + file + '\''+options.suffix+';' + grunt.utils.linefeed;
+			
+			var key = options.key(filepath);
+			var contents = grunt.file.read(filepath).replace(cleaner, '').replace(/'/g, "\\'");
+			
+			js += '	' + options.variable + "['" + key + "']=" + options.prefix + '\'' + contents + '\'' + options.suffix + ';' + grunt.utils.linefeed;
 		});
 
-		src += '}());' + grunt.utils.linefeed;
+		js += '}());' + grunt.utils.linefeed;
 
-		return src;
+		return js;
 	});
 
 };

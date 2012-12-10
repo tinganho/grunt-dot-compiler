@@ -19,13 +19,15 @@ given the following config and template
 ### config
 ```javascript
   templateclient: {
-    options: {
-      variable: 'window.tmpl'
-      prefix: 'Hogan.compile(',
-      suffix: ')'
+    dist: {
+		options: {
+			variable: 'window.tmpl',
+			prefix: 'Hogan.compile(',
+			suffix: ')'
+		},
+		src: ['templates/**/*.hogan'],
+		dest: 'dist/tmpl.js' 
     }
-    src: ['templates/**/*.hogan'],
-    dest: 'dist/tmpl.js' 
   }
 ```
 ### templates
@@ -50,8 +52,8 @@ will output the following script file
 ```javascript
 (function compileTemplates() {
   window.tmpl=window.tmpl||{};
-  window.tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
-  window.tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
+  tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
+  tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
 }());
 ```
 ready to use/include/concat etc in your app like this.
