@@ -4,20 +4,26 @@
   "version": "0.2.0",
   "homepage": "https://github.com/alanshaw/grunt-template-client",
   "author": {
-    "name": "Markus Ullmark / Alan Shaw",
-    "email": "ullmark@gmail.com / alan138@gmail.com"
+    "name": "Markus Ullmark",
+    "email": "ullmark@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Alan Shaw",
+      "email": "alan138@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com:alanshaw/grunt-template-client.git"
   },
   "bugs": {
-    "url": "https://github.com/ullmark/grunt-hogan-client/issues"
+    "url": "https://github.com/alanshaw/grunt-template-client/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/ullmark/grunt-hogan-client/blob/master/LICENSE-MIT"
+      "url": "https://github.com/alanshaw/grunt-template-client/blob/master/LICENSE-MIT"
     }
   ],
   "main": "grunt.js",
