@@ -1,7 +1,7 @@
 {
   "name": "grunt-template-client-dot",
   "description": "Compiles doT templates ready for RequireJS",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/tinganho/grunt-template-client-dot",
   "author": {
     "name": "Tingan Ho",
@@ -33,6 +33,9 @@
   },
   "scripts": {
     "test": "grunt test"
+  },
+  "dependencies": {
+    "yeoman-express-dot": "~0.2.6"
   },
   "devDependencies": {
     "grunt": "~0.3.17",
