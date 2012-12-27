@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 			js += 'var ' + v + '=' + v + '|| {};' + grunt.utils.linefeed;
 		});
 
-		var doT = require( 'dot' );
+		var doT = require( 'yeoman-express-dot' );
 
     var defs = {};
     defs.loadfile = function( path ) {
