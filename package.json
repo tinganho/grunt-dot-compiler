@@ -1,33 +1,33 @@
 {
-  "name": "grunt-template-client",
-  "description": "compiles any and all templates into ready to use includes",
-  "version": "0.2.0",
-  "homepage": "https://github.com/alanshaw/grunt-template-client",
+  "name": "grunt-template-client-dot",
+  "description": "Compiles doT templates ready for RequireJS",
+  "version": "0.2.1",
+  "homepage": "https://github.com/tinganho/grunt-template-client-dot",
   "author": {
-    "name": "Markus Ullmark",
-    "email": "ullmark@gmail.com"
+    "name": "Tingan Ho",
+    "email": "tingan87@gmail.com"
   },
   "contributors": [
     {
-      "name": "Alan Shaw",
-      "email": "alan138@gmail.com"
+      "name": "Tingan Ho",
+      "email": "tingan87@gmail.com"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com:alanshaw/grunt-template-client.git"
+    "url": "git://github.com:tinganho/grunt-template-client-dot.git"
   },
   "bugs": {
-    "url": "https://github.com/alanshaw/grunt-template-client/issues"
+    "url": "https://github.com/tinganho/grunt-template-client-dot/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/alanshaw/grunt-template-client/blob/master/LICENSE-MIT"
+      "url": "https://github.com/tinganho/grunt-template-client-dot/blob/master/LICENSE-MIT"
     }
   ],
   "main": "grunt.js",
-  "bin": "bin/grunt-template-client",
+  "bin": "bin/grunt-template-client-dot",
   "engines": {
     "node": "*"
   },
@@ -41,7 +41,7 @@
   },
   "keywords": [
     "gruntplugin",
-    "hogan",
+    "dot",
     "template",
     "templates"
   ]
