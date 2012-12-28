@@ -18,33 +18,26 @@ grunt.loadNpmTasks('grunt-template-client');
 given the following config and template
 ### config
 ```javascript
-  templateclient: {
+  'compile-templates': {
     dist: {
-		options: {
-			variable: 'window.tmpl',
-			prefix: 'Hogan.compile(',
-			suffix: ')'
-		},
-		src: ['templates/**/*.hogan'],
-		dest: 'dist/tmpl.js' 
+      options: {
+        variable: 'tmpl',
+          prefix: 'doT.template(',
+          suffix: ')',
+          root: __dirname + '/app/profiles'
+      },
+      src: ['app/**/*.dot'],
+      dest: 'app/public/templates/tmpl.js'
     }
   }
 ```
 ### templates
-#### templates/item.hogan
+#### templates/item.dot
 ```html
 <li>
   <h2>{{title}}<h2>
   <p>{{text}}</p>
 </li>
-```
-#### templates/list.hogan
-```html
-<ul id="a-list">
-{{#items}}
-  {{>item}}
-{{/items}}
-</ul>
 ```
 
 will output the following script file
@@ -55,11 +48,6 @@ will output the following script file
   tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
   tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
 }());
-```
-ready to use/include/concat etc in your app like this.
-
-```javascript
-tmpl.list.render({ items: [] });
 ```
 
 ## Todo
