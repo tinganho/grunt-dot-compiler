@@ -1,4 +1,4 @@
-# grunt-dot-compilr
+# grunt-dot-compiler
 
 > Compiles doT templates ready for RequireJS
 
