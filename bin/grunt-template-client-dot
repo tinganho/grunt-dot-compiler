@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('grunt').npmTasks('grunt-template-client').cli();
+require('grunt').npmTasks('grunt-template-client-dot').cli();
