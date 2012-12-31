@@ -3,4 +3,4 @@ node_js:
   - 0.8
 before_install:
   - npm install grunt -g
-  - grunt comile-templates
+  - grunt compile-templates
