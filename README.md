@@ -1,4 +1,4 @@
-# grunt-dot-compiler
+# grunt-dot-compiler [![Build Status](https://travis-ci.org/tinganho/grunt-dot-compiler.png)](https://travis-ci.org/tinganho/grunt-dot-compiler)
 
 > Compiles doT templates ready for RequireJS
 
