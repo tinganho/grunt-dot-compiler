@@ -50,7 +50,7 @@
         return path.basename(filepath, path.extname(filepath));
       },
       prefix: 'doT.template(',
-        suffix: ')',
+      suffix: ')',
       nodeCompile: true
     });
 

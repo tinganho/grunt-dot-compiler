@@ -5,28 +5,22 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    templateclient: {
+    'compile-templates': {
       namespaced: {
         options: {
-          variable: 'foo.tmpl',
-          prefix: 'new Ext.XTemplate(',
-          suffix: ')'
+            variable: 'tmpl'
         },
-        src: ['test/templates/**/*.hogan'],
-        dest: 'test/tmp/foo.js'
-      },
-      global: {
-        src: ['test/templates/**/*.hogan'],
-        dest: 'test/tmp/bar.js'
+        src: ['test/templates/**/*.dot'],
+        dest: 'test/tmp/tmpl.js'
       }
     },
 
     test: {
-      files: ['test/template-client_test.js']
+      files: ['test/compile-templates-test.js']
     },
 
     lint: {
-      files: ['grunt.js', 'tasks/**/*.js', 'test/template-client_test.js']
+      files: ['grunt.js', 'test/compile-templates-test.js']
     },
 
     watch: {
@@ -50,7 +44,7 @@ module.exports = function(grunt) {
         es5: true
       },
       globals: {
-        Hogan: true,
+        dot: true,
         foo: true,
         window: true
       }
@@ -64,6 +58,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bump');
 
   // Default task.
-  grunt.registerTask('default', 'lint templateclient test');
+  grunt.registerTask('default', 'lint compile-templates test');
+
+  // Default task.
+  grunt.registerTask('jshint');
 
 };

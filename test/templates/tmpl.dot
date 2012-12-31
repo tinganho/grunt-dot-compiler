@@ -1,0 +1,3 @@
+<li class="something">
+  <a>{{=it.something}}</a>
+</li>

@@ -1,0 +1,5 @@
+
+node_js:
+  - 0.8
+before_install:
+  - grunt comile-templates
