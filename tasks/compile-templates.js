@@ -12,7 +12,7 @@
 
   grunt.util = grunt.util || grunt.utils;
 
-  var _ = grunt.utils._;
+  var _ = grunt.util._;
 
   var path = require('path'),
       fs = require('fs'),
