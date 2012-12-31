@@ -1,14 +1,14 @@
-# grunt-template-client
+# grunt-dot-compiler
 
-> Compile any and all templates into a ready to use script include.
+> Compiles doT templates ready for RequireJS
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-template-client`
+Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-dot-compiler`
 
 Then add this line to your project's `grunt.js` gruntfile:
 
 ```javascript
-grunt.loadNpmTasks('grunt-template-client');
+grunt.loadNpmTasks('grunt-dot-compiler');
 ```
 
 [grunt]: http://gruntjs.com/
@@ -18,60 +18,46 @@ grunt.loadNpmTasks('grunt-template-client');
 given the following config and template
 ### config
 ```javascript
-  templateclient: {
+  'compile-templates': {
     dist: {
-		options: {
-			variable: 'window.tmpl',
-			prefix: 'Hogan.compile(',
-			suffix: ')'
-		},
-		src: ['templates/**/*.hogan'],
-		dest: 'dist/tmpl.js' 
+      options: {
+        variable: 'tmpl',
+          prefix: 'doT.template(',
+          suffix: ')',
+          root: __dirname + '/app/profiles'
+      },
+      src: ['app/**/*.dot'],
+      dest: 'app/public/templates/tmpl.js'
     }
   }
 ```
 ### templates
-#### templates/item.hogan
+#### templates/item.dot
 ```html
 <li>
-  <h2>{{title}}<h2>
-  <p>{{text}}</p>
+  <a>{{=it.url}}<a>
 </li>
-```
-#### templates/list.hogan
-```html
-<ul id="a-list">
-{{#items}}
-  {{>item}}
-{{/items}}
-</ul>
 ```
 
 will output the following script file
 #### dist/tmpl.js
 ```javascript
-(function compileTemplates() {
-  window.tmpl=window.tmpl||{};
-  tmpl.item=Hogan.compile('<li><h2>{{title}}</h2><p>{{text}}</p></li>');
-  tmpl.list=Hogan.compile('<ul id="a-list">{{#items}}{{>item}}{{/items}}</ul>');
-}());
+if( typeof define !== "function" ) {
+  define = require( "amdefine" )( module )
+}
+define(function() {
+  var tmpl=tmpl|| {};
+  tmpl['item']=function anonymous(it) {
+    var out='<li><a href="'+(it.url)+'"></a></li>';return out;
+  }
+  return tmpl;
+});
 ```
-ready to use/include/concat etc in your app like this.
-
-```javascript
-tmpl.list.render({ items: [] });
-```
-
-## Todo
-I guess there will be need to tweek the regex that cleans the template.
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
 * 0.2.0 - Forked from https://github.com/ullmark/grunt-hogan-client to make generic.
 * 0.1.1 - Initial release
 
 ## License
-Copyright (c) 2012 Markus Ullmark  
+Copyright (c) 2012 Tingan Ho
 Licensed under the MIT license.
