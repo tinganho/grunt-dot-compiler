@@ -26,14 +26,16 @@
   // ==========================================================================
 
   grunt.registerMultiTask('compile-templates', 'prepares and combines any type of template into a script include', function() {
+
+    console.log(this)
     // grap the filepattern
-    var files = grunt.file.expandFiles(this.file.src);
+    var files = grunt.file.expand({filter: 'isFile'}, this.files[0].src);
     // create the hogan include
     var src = GruntDotCompiler.compileTemplates(files, this.data.options);
     // write the new file
-    grunt.file.write(this.file.dest, src);
+    grunt.file.write(this.files[0].dest, src);
     // log our success
-    grunt.log.writeln('File "' + this.file.dest + '" created.');
+    grunt.log.writeln('File "' + this.files[0].dest + '" created.');
   });
 
   // ==========================================================================
