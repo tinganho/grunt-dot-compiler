@@ -29,7 +29,7 @@
     // grap the filepattern
     var files = grunt.file.expandFiles(this.file.src);
     // create the hogan include
-    var src = grunt.helper('compile-templates', files, this.data.options);
+    var src = GruntDotCompiler.compileTemplates(files, this.data.options);
     // write the new file
     grunt.file.write(this.file.dest, src);
     // log our success
@@ -39,8 +39,8 @@
   // ==========================================================================
   // HELPERS
   // ==========================================================================
-
-  grunt.registerHelper('compile-templates', function(files, options) {
+  var GruntDotCompiler = {};
+  GruntDotCompiler.compileTemplates = function(files, options) {
 
     var js = '';
 
@@ -56,16 +56,16 @@
 
     options.variable = options.variable.replace('window.', '');
 
-    js += 'if( typeof define !== "function" ) {' + grunt.utils.linefeed;
-    js +=   'define = require( "amdefine" )( module )' + grunt.utils.linefeed;
-    js += '}' + grunt.utils.linefeed;
+    js += 'if( typeof define !== "function" ) {' + grunt.util.linefeed;
+    js +=   'define = require( "amdefine" )( module )' + grunt.util.linefeed;
+    js += '}' + grunt.util.linefeed;
 
-    js += 'define(function() {' + grunt.utils.linefeed;
+    js += 'define(function() {' + grunt.util.linefeed;
 
       var variables = options.variable.split('.');
 
       _.each(variables, function(v) {
-        js += 'var ' + v + '=' + v + '|| {};' + grunt.utils.linefeed;
+        js += 'var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
       });
 
       var doT = require( 'yeoman-express-dot' );
@@ -81,22 +81,22 @@
         var key = options.key(filepath);
         var contents = grunt.file.read(filepath).replace(cleaner, '').replace(/'/g, "\\'");
 
-        var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.utils.linefeed;
+        var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
 
         if( options.nodeCompile ) {
           compile = eval( compile );
           console.log(key + ' = ' + compile);
         }
 
-        js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.utils.linefeed;
+        js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
 
 
       });
 
-      js += 'return ' + options.variable + ';});' + grunt.utils.linefeed;
+      js += 'return ' + options.variable + ';});' + grunt.util.linefeed;
 
     return js;
 
-  });
+  };
 
 };
