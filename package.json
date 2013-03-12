@@ -26,8 +26,7 @@
       "url": "https://github.com/tinganho/grunt-dot-compiler/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "grunt.js",
-  "bin": "bin/grunt-dot-compiler",
+  "main": "Gruntfile.js",
   "engines": {
     "node": "*"
   },
@@ -36,7 +35,6 @@
   },
   "dependencies": {
     "dot": "~1.0.1",
-    "grunt-contrib-nodeunit": "~0.1.1",
     "findup-sync": "~0.1.2",
     "requirejs": "~2.1.5"
   },
