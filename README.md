@@ -21,7 +21,8 @@ given the following config and template
   'dot-compile': {
     dist: {
       options: {
-        variable: 'tmpl'
+        variable: 'tmpl',
+        root: __dirname + '/app/profiles'
       },
       src: ['app/**/*.dot'],
       dest: 'app/public/templates/tmpl.js'
