@@ -60,6 +60,18 @@
     js +=   'define = require( "amdefine" )( module )' + grunt.util.linefeed;
     js += '}' + grunt.util.linefeed;
 
+    // Defining encodeHTML method for the templates
+    js += 'function encodeHTMLSource() {';
+    js += 'var encodeHTMLRules = { "&": "&#38;", "<": "&#60;", ">": "&#62;", \'"\': \'&#34;\', "\'": \'&#39;\', "/": \'&#47;\' },';
+    js += 'matchHTML = /&(?!#?\w+;)|<|>|"|\'|\\//g;';
+    js += 'return function() {';
+    js += 'return this ? this.replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : this;';
+    js += '};';
+    js += '}';
+
+    js += 'String.prototype.encodeHTML=encodeHTMLSource();';
+    js += "\n";    
+
     js += 'define(function() {' + grunt.util.linefeed;
 
       var variables = options.variable.split('.');
