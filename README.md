@@ -18,7 +18,7 @@ grunt.loadNpmTasks('grunt-dot-compiler');
 given the following config and template
 ### config
 ```javascript
-  'compile-templates': {
+  'dot-compile': {
     dist: {
       options: {
         variable: 'tmpl'
@@ -50,10 +50,6 @@ define(function() {
   return tmpl;
 });
 ```
-
-## Release History
-* 0.2.0 - Forked from https://github.com/ullmark/grunt-hogan-client to make generic.
-* 0.1.1 - Initial release
 
 ## License
 Copyright (c) 2012 Tingan Ho
