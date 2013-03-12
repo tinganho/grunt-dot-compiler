@@ -1,5 +1,5 @@
 {
-  "name": "grunt-contrib-dot-compiler",
+  "name": "grunt-dot-compiler",
   "description": "Compiles doT templates ready for RequireJS",
   "version": "0.2.15",
   "homepage": "https://github.com/tinganho/grunt-dot-compiler",
