@@ -21,10 +21,7 @@ given the following config and template
   'compile-templates': {
     dist: {
       options: {
-        variable: 'tmpl',
-          prefix: 'doT.template(',
-          suffix: ')',
-          root: __dirname + '/app/profiles'
+        variable: 'tmpl'
       },
       src: ['app/**/*.dot'],
       dest: 'app/public/templates/tmpl.js'
