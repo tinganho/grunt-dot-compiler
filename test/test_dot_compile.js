@@ -38,6 +38,10 @@ describe('dot-compile', function() {
   it('should be able to compile an htmlencode functionality', function() {
     expect(typeof String.prototype.encodeHTML === 'function').to.be.true;
   });
+  it('should be able to remove comments during compile', function() {
+    expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
+    expect(/\/\/.*\n/g.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
+  });
 });
 
 describe('requirejs-only', function(){

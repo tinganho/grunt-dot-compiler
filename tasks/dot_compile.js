@@ -94,20 +94,19 @@
     defs.root = options.root;
 
     files.map(function(filepath) {
-
       var key = options.key(filepath);
-      var contents = grunt.file.read(filepath).replace(cleaner, '').replace(/'/g, "\\'");
+      var contents = grunt.file.read(filepath)
+        .replace(/\/\/.*\n/gm,'')
+        .replace(cleaner, '')
+        .replace(/'/g, "\\'")
+        .replace(/\/\*.*?\*\//gm,'')
 
       var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
-
       if( options.node ) {
         compile = eval( compile );
         console.log(key + ' = ' + compile);
       }
-
       js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
-
-
     });
 
     if(options.requirejs) {
