@@ -11,36 +11,63 @@ requirejs.config({
   nodeRequire: require
 });
 
-
-
-var tmpl = requirejs('./output/tmpl');
+var nodeRequirejsTmpl, requirejsTmpl, nodeTmpl;
 
 require(findup('Gruntfile.js'))(grunt);
 
 describe('dot-compile', function() {
 
   before(function(done) {
-    exec('grunt dot-compile', function(error, stdout, stderr) {
-      exec('grunt dot-compile', function(error, stdout, stderr) {
-        console.log('Compiling templates');
-        done();
-      });
+    exec('grunt dot-compile:nodeRequirejs', function(error, stdout, stderr) {
+      nodeRequirejsTmpl = requirejs('./output/tmpl');
+      done();
     });
   });
-
   it('should be able to compile regular templates', function() {
-    expect(tmpl.regular()).to.equal('<div></div>');
+    expect(nodeRequirejsTmpl.regular()).to.equal('<div></div>');
   });
   it('should be able to compile templates with variables', function() {
-    expect(tmpl.variables({'var': 'hello' })).to.equal('<div>hello</div>');
+    expect(nodeRequirejsTmpl.variables({'var': 'hello' })).to.equal('<div>hello</div>');
   });
   it('should be able to compile templates with arrays', function() {
-    expect(tmpl.arrays({array: ['1', '2', '3'] })).to.equal('<div>1</div><div>2</div><div>3</div>');
+    expect(nodeRequirejsTmpl.arrays({array: ['1', '2', '3'] })).to.equal('<div>1</div><div>2</div><div>3</div>');
   });
   it('should be able to compile templates with hash maps', function() {
-    expect(tmpl.hashMap({'1': '1', '2': '2', '3': '3'})).to.equal('<div>1</div><div>2</div><div>3</div>');
+    expect(nodeRequirejsTmpl.hashMap({'1': '1', '2': '2', '3': '3'})).to.equal('<div>1</div><div>2</div><div>3</div>');
   });
   it('should be able to compile an htmlencode functionality', function() {
     expect(typeof String.prototype.encodeHTML === 'function').to.be.true;
+  });
+});
+
+describe('requirejs-only', function(){
+  before(function(done) {
+    exec('grunt dot-compile:requirejs', function(error, stdout, stderr) {
+      requirejsTmpl = grunt.file.read('test/output/tmpl.js');
+      done();
+    });
+  });
+
+  it('should not have amddefine module', function() {
+    expect(/if\(typeof define/.test(requirejsTmpl.toString())).to.be.false;
+  });
+  it('should have a define', function() {
+    expect(/define\(/.test(requirejsTmpl.toString())).to.be.true;
+  });
+});
+
+describe('node-only', function(){
+  before(function(done) {
+    exec('grunt dot-compile:node', function(error, stdout, stderr) {
+      nodeTmpl = grunt.file.read('test/output/tmpl.js');
+      done();
+    });
+  });
+
+  it('should not have amddefine module', function() {
+    expect(/if\(typeof define/.test(nodeTmpl.toString())).to.be.false;
+  });
+  it('should have a module exports', function() {
+    expect(/module\.exports/.test(nodeTmpl.toString())).to.be.true;
   });
 });

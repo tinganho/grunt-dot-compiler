@@ -6,13 +6,36 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     'dot-compile': {
-      dist: {
+      nodeRequirejs: {
         options: {
-            variable: 'tmpl'
+            variable:  'tmpl',
+            node:      true,
+            requirejs: true
         },
         src: ['test/example/**/*.dot'],
         dest: 'test/output/tmpl.js'
-      }
+      },
+
+      requirejs: {
+        options: {
+            variable: 'tmpl',
+            node:      false,
+            requirejs: true
+        },
+        src: ['test/example/**/*.dot'],
+        dest: 'test/output/tmpl.js'
+      },
+
+      node: {
+        options: {
+            variable: 'tmpl',
+            node:      true,
+            requirejs: false
+        },
+        src: ['test/example/**/*.dot'],
+        dest: 'test/output/tmpl.js'
+      },
+
     },
 
     nodeunit: {

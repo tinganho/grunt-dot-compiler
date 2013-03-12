@@ -52,15 +52,22 @@
       },
       prefix: 'doT.template(',
       suffix: ')',
-      nodeCompile: true
+      node: true,
+      requirejs: true
     });
 
     options.variable = options.variable.replace('window.', '');
 
     // RequireJS
-    js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
-    js +=   'define = require( "amdefine")(module)' + grunt.util.linefeed;
-    js += '}' + grunt.util.linefeed;
+    if(options.requirejs && options.node) {
+      js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
+      js +=   'define = require( "amdefine")(module)' + grunt.util.linefeed;
+      js += '}' + grunt.util.linefeed;
+    }
+
+    if(options.requirejs) {
+      js += 'define(function() {' + grunt.util.linefeed;
+    }
 
     // Defining encodeHTML method for the templates
     js += 'function encodeHTMLSource() {';
@@ -72,40 +79,42 @@
     js += '};' + grunt.util.linefeed;
 
     js += 'String.prototype.encodeHTML=encodeHTMLSource();';
-    js += "\n";    
+    js += "\n";
 
-    js += 'define(function() {' + grunt.util.linefeed;
+    var variables = options.variable.split('.');
 
-      var variables = options.variable.split('.');
+    _.each(variables, function(v) {
+      js += 'var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
+    });
 
-      _.each(variables, function(v) {
-        js += 'var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
-      });
+    var defs = {};
+    defs.loadfile = function( path ) {
+      return fs.readFileSync( path );
+    };
+    defs.root = options.root;
 
-      var defs = {};
-      defs.loadfile = function( path ) {
-        return fs.readFileSync( path );
-      };
-      defs.root = options.root;
+    files.map(function(filepath) {
 
-      files.map(function(filepath) {
+      var key = options.key(filepath);
+      var contents = grunt.file.read(filepath).replace(cleaner, '').replace(/'/g, "\\'");
 
-        var key = options.key(filepath);
-        var contents = grunt.file.read(filepath).replace(cleaner, '').replace(/'/g, "\\'");
+      var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
 
-        var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
+      if( options.node ) {
+        compile = eval( compile );
+        console.log(key + ' = ' + compile);
+      }
 
-        if( options.nodeCompile ) {
-          compile = eval( compile );
-          console.log(key + ' = ' + compile);
-        }
-
-        js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
+      js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
 
 
-      });
+    });
 
+    if(options.requirejs) {
       js += 'return ' + options.variable + ';});' + grunt.util.linefeed;
+    } else if(options.node) {
+      js += 'module.exports = ' + options.variable + ';';
+    }
 
     return js;
 
