@@ -29,7 +29,7 @@ given the following config and template
     }
   }
 ```
-## Options
+### Options
 * variable String Variable to store everything
 * root String Root of the project
 * requirejs Boolean Enable RequireJS
