@@ -32,15 +32,19 @@
     "node": "*"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "bin/test"
   },
   "dependencies": {
-    "yeoman-express-dot": "~0.2.6",
-    "grunt-contrib-nodeunit": "~0.1.1"
+    "dot": "~1.0.1",
+    "grunt-contrib-nodeunit": "~0.1.1",
+    "findup-sync": "~0.1.2",
+    "requirejs": "~2.1.5"
   },
   "devDependencies": {
     "grunt": "~0.4",
-    "grunt-contrib-clean": "~0.3.1"
+    "grunt-contrib-clean": "~0.3.1",
+    "mocha": "~1.8.2",
+    "chai": "~1.5.0"
   },
   "keywords": [
     "gruntplugin",

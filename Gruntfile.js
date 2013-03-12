@@ -5,13 +5,13 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    'compile-templates': {
-      namespaced: {
+    'dot-compile': {
+      dist: {
         options: {
             variable: 'tmpl'
         },
-        src: ['test/templates/**/*.dot'],
-        dest: 'test/tmp/tmpl.js'
+        src: ['test/example/**/*.dot'],
+        dest: 'test/output/tmpl.js'
       }
     },
 
@@ -57,6 +57,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
   // Default task.
-  grunt.registerTask('default', 'jshint compile-templates nodeunit');
+  grunt.registerTask('default', 'jshint dot-compile nodeunit');
 
 };

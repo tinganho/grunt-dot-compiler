@@ -1,0 +1,3 @@
+{{ for(var prop in it) { }}
+<div>{{=prop}}</div>
+{{ } }}

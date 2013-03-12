@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo 'Testing dot-compile functionality...'
+./node_modules/mocha/bin/mocha test/test_dot_compile.js
