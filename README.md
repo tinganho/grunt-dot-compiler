@@ -30,10 +30,10 @@ given the following config and template
   }
 ```
 ## Options
-* variable String 
-* root String
-* requirejs Boolean
-* node Boolean 
+* variable String Variable to store everything
+* root String Root of the project
+* requirejs Boolean Enable RequireJS
+* node Boolean Enable Node
 
 ### templates
 #### templates/item.dot
