@@ -21,14 +21,20 @@ given the following config and template
   'dot-compile': {
     dist: {
       options: {
-        variable: 'tmpl',
-        root: __dirname + '/app/profiles'
+        variable : 'tmpl',
+        root     : __dirname + '/app/profiles'
       },
-      src: ['app/**/*.dot'],
-      dest: 'app/public/templates/tmpl.js'
+      src  : ['app/**/*.dot'],
+      dest : 'app/public/templates/tmpl.js'
     }
   }
 ```
+## Options
+* variable String 
+* root String
+* requirejs Boolean
+* node Boolean 
+
 ### templates
 #### templates/item.dot
 ```html
