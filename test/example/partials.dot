@@ -1,0 +1,7 @@
+{{##def.partial1: load('./partial1.part') #}}
+{{##def.partial2: load('test/example/partial2.part') #}}
+
+<div>
+  {{#def.partial1}}
+  {{#def.partial2}}
+</div>

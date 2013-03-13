@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         },
         src: ['test/example/**/*.dot'],
         dest: 'test/output/tmpl.js'
-      },
+      }
 
     },
 
