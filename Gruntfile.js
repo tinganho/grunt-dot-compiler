@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    'dot-compile': {
+    'dot': {
       nodeRequirejs: {
         options: {
             variable:  'tmpl',
@@ -80,6 +80,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
   // Default task.
-  grunt.registerTask('default', 'jshint dot-compile nodeunit');
+  grunt.registerTask('default', 'jshint dot nodeunit');
 
 };

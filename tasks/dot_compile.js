@@ -26,7 +26,7 @@
   // TASKS
   // ==========================================================================
 
-  grunt.registerMultiTask('dot-compile', 'prepares and combines any type of template into a script include', function() {
+  grunt.registerMultiTask('dot', 'prepares and combines any type of template into a script include', function() {
     // grap the filepattern
     var files = grunt.file.expand({filter: 'isFile'}, this.files[0].src);
     // create the hogan include

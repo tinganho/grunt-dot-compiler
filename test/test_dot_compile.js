@@ -18,7 +18,7 @@ require(findup('Gruntfile.js'))(grunt);
 describe('dot-compile', function() {
 
   before(function(done) {
-    exec('grunt dot-compile:nodeRequirejs', function(error, stdout, stderr) {
+    exec('grunt dot:nodeRequirejs', function(error, stdout, stderr) {
       nodeRequirejsTmpl = requirejs('./output/tmpl');
       done();
     });
@@ -46,7 +46,7 @@ describe('dot-compile', function() {
 
 describe('requirejs-only', function(){
   before(function(done) {
-    exec('grunt dot-compile:requirejs', function(error, stdout, stderr) {
+    exec('grunt dot:requirejs', function(error, stdout, stderr) {
       requirejsTmpl = grunt.file.read('test/output/tmpl.js');
       done();
     });
@@ -62,7 +62,7 @@ describe('requirejs-only', function(){
 
 describe('node-only', function(){
   before(function(done) {
-    exec('grunt dot-compile:node', function(error, stdout, stderr) {
+    exec('grunt dot:node', function(error, stdout, stderr) {
       nodeTmpl = grunt.file.read('test/output/tmpl.js');
       done();
     });
