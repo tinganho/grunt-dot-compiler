@@ -19,6 +19,8 @@
       cleaner = /^\s+|\s+$|[\r\n]+/gm,
       doT     = require('dot');
 
+  var gruntRoot = path.dirname(grunt.file.findup('Gruntfile.js')) + '/';
+
   // Please see the grunt documentation for more information regarding task and
   // helper creation: https://github.com/gruntjs/grunt/blob/master/docs/toc.md
 
@@ -54,7 +56,7 @@
       suffix: ')',
       node: true,
       requirejs: true,
-      root: path.dirname(grunt.file.findup('Gruntfile.js')) + '/'
+      root: gruntRoot
     });
 
     // Sanetize
@@ -102,11 +104,11 @@
       var key = options.key(filePath);
       var contents = grunt.file.read(filePath)
         .replace(/\/\/.*\n/g,'')
-        .replace(/ *def\.loadfile\(['|"](.*)['|"]\) */g, function(m, _filePath) {
+        .replace(/ *load\(['|"](.*)['|"]\) */g, function(m, _filePath) {
           var _path;
           // Check relative path
           if(/^\./.test(_filePath)) {
-            _path = path.join(options.root, path.dirname(filePath), _filePath);
+            _path = path.join(gruntRoot, path.dirname(filePath), _filePath);
           } else {
             _path = path.join(options.root, _filePath);
           }
@@ -116,8 +118,6 @@
         .replace(/'/g, "\\'")
         .replace(/\/\*.*?\*\//gm,'')
 
-
-      // console.log(contents);
       var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
       if( options.node ) {
         compile = eval( compile );
