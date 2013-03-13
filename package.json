@@ -1,7 +1,7 @@
 {
   "name": "grunt-dot-compiler",
   "description": "Grunt task for compiling doT templates",
-  "version": "0.3.8",
+  "version": "0.3.10",
   "homepage": "https://github.com/tinganho/grunt-dot",
   "author": {
     "name": "Tingan Ho",
