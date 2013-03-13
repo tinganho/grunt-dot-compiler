@@ -101,11 +101,8 @@
     files.map(function(filePath) {
       var key = options.key(filePath);
       var contents = grunt.file.read(filePath)
-        .replace(/\/\/.*\n/gm,'')
-        .replace(cleaner, '')
-        .replace(/'/g, "\\'")
-        .replace(/\/\*.*?\*\//gm,'')
-        .replace(/\s*def\.loadfile\(\\['|"](.*)\\['|"]\);?\s*/g, function(m, _filePath) {
+        .replace(/\/\/.*\n/g,'')
+        .replace(/ *def\.loadfile\(['|"](.*)['|"]\) */g, function(m, _filePath) {
           var _path;
           // Check relative path
           if(/^\./.test(_filePath)) {
@@ -114,7 +111,11 @@
             _path = path.join(options.root, _filePath);
           }
           return fs.readFileSync(_path);
-        });
+        })
+        .replace(cleaner, '')
+        .replace(/'/g, "\\'")
+        .replace(/\/\*.*?\*\//gm,'')
+
 
       // console.log(contents);
       var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;

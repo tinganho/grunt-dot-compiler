@@ -39,7 +39,7 @@ describe('dot-compile', function() {
     expect(typeof String.prototype.encodeHTML === 'function').to.be.true;
   });
   it('should be able to compile partials', function() {
-    expect(nodeRequirejsTmpl.partials()).to.equal('<div><div></div></div>');
+    expect(nodeRequirejsTmpl.partials()).to.equal('<div><div></div><div></div></div>');
   });
   it('should be able to remove comments during compile', function() {
     expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
