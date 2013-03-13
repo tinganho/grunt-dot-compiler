@@ -18,7 +18,7 @@ grunt.loadNpmTasks('grunt-dot-compiler');
 given the following config and template
 ### config
 ```javascript
-  'dot-compile': {
+  dot: {
     dist: {
       options: {
         variable : 'tmpl',
