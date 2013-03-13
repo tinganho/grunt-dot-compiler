@@ -53,10 +53,15 @@
       prefix: 'doT.template(',
       suffix: ')',
       node: true,
-      requirejs: true
+      requirejs: true,
+      root: path.dirname(grunt.file.findup('Gruntfile.js')) + '/'
     });
 
+    // Sanetize
     options.variable = options.variable.replace('window.', '');
+    if(options.root.substr(-1) !== '/') {
+      options.root += '/';
+    }
 
     // RequireJS
     if(options.requirejs && options.node) {
@@ -93,14 +98,25 @@
     };
     defs.root = options.root;
 
-    files.map(function(filepath) {
-      var key = options.key(filepath);
-      var contents = grunt.file.read(filepath)
+    files.map(function(filePath) {
+      var key = options.key(filePath);
+      var contents = grunt.file.read(filePath)
         .replace(/\/\/.*\n/gm,'')
         .replace(cleaner, '')
         .replace(/'/g, "\\'")
         .replace(/\/\*.*?\*\//gm,'')
+        .replace(/\s*def\.loadfile\(\\['|"](.*)\\['|"]\);?\s*/g, function(m, _filePath) {
+          var _path;
+          // Check relative path
+          if(/^\./.test(_filePath)) {
+            _path = path.join(options.root, path.dirname(filePath), _filePath);
+          } else {
+            _path = path.join(options.root, _filePath);
+          }
+          return fs.readFileSync(_path);
+        });
 
+      // console.log(contents);
       var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
       if( options.node ) {
         compile = eval( compile );
