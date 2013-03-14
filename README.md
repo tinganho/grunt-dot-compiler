@@ -1,6 +1,6 @@
 # grunt-dot-compiler [![Build Status](https://travis-ci.org/tinganho/grunt-dot-compiler.png)](https://travis-ci.org/tinganho/grunt-dot-compiler)
 
-> Compiles doT templates ready for RequireJS
+Compiles doT templates ready for RequireJS
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-dot-compiler`
@@ -29,6 +29,7 @@ given the following config and template
     }
   }
 ```
+
 ### Options
 * variable String Variable to store everything
 * root String Root of the project
@@ -56,6 +57,18 @@ define(function() {
   }
   return tmpl;
 });
+```
+
+### Partials
+You can load partials with the `load` command
+```javascript
+  {{##def.partial1: load('./partial1.part') #}} // Use relative paths
+  {{##def.partial2: load('test/example/partial2.part') #}} // Use options.root
+  
+  <div>
+    {{#def.partial1}}
+    {{#def.partial2}}
+  </div>
 ```
 
 ## License
