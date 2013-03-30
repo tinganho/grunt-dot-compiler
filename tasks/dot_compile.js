@@ -128,6 +128,8 @@
 
     if(options.requirejs) {
       js += 'return ' + options.variable + ';});' + grunt.util.linefeed;
+    } else if(options.simple && options.node){
+      js += '';
     } else if(options.node) {
       js += 'module.exports = ' + options.variable + ';';
     }
