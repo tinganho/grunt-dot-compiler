@@ -34,7 +34,8 @@ given the following config and template
 * variable String Variable to store everything
 * root String Root of the project
 * requirejs Boolean Enable RequireJS
-* node Boolean Enable Node
+* node Boolean Enable Node (if false, templates will not be compiled, just minified and concatenated)
+* simple Boolean Enable do not include module.exports at the end of the compiled file
 
 ### templates
 #### templates/item.dot
@@ -44,7 +45,7 @@ given the following config and template
 </li>
 ```
 
-will output the following script file
+will output the following script file (if requirejs and node are set to true)
 #### dist/tmpl.js
 ```javascript
 if( typeof define !== "function" ) {
