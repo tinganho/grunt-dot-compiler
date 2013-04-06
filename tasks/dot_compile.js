@@ -59,7 +59,7 @@
     if(options.requirejs && options.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
       js +=   'define = require( "amdefine")(module)' + grunt.util.linefeed;
-      js += '}' + grunt.util.linefeed;
+      js += '};' + grunt.util.linefeed;
     }
 
     if(options.requirejs) {
@@ -73,7 +73,7 @@
     js += 'return function() {';
     js += 'return this ? this.replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : this;';
     js += '};';
-    js += '};' + grunt.util.linefeed;
+    js += '}' + grunt.util.linefeed;
 
     js += 'String.prototype.encodeHTML=encodeHTMLSource();';
     js += "\n";
@@ -111,13 +111,14 @@
       var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
       if( options.node ) {
         compile = eval( compile );
-        console.log(key + ' = ' + compile);
       }
-      js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
+      js += ' ' + options.variable + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
     });
 
     if(options.requirejs) {
       js += 'return ' + options.variable + ';});' + grunt.util.linefeed;
+    } else if(options.simple && options.node){
+      js += '';
     } else if(options.node) {
       js += 'module.exports = ' + options.variable + ';';
     }
