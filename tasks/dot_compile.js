@@ -43,36 +43,39 @@
   // HELPERS
   // ==========================================================================
   var GruntDotCompiler = {};
-  GruntDotCompiler.compileTemplates = function(files, options) {
+  GruntDotCompiler.compileTemplates = function(files, opt) {
 
     var js = '';
 
-    options = _.defaults(options || {}, {
+    var opt = _.defaults(opt || {}, {
       variable: 'tmpl',
       key: function(filepath) {
         return path.basename(filepath, path.extname(filepath));
       },
       prefix: 'doT.template(',
       suffix: ')',
-      node: true,
-      requirejs: true,
+      node: false,
+      requirejs: false,
       root: gruntRoot
     });
 
     // Sanetize
-    options.variable = options.variable.replace('window.', '');
-    if(options.root.substr(-1) !== '/') {
-      options.root += '/';
+    opt.variable = opt.variable.replace('window.', '');
+    if(opt.root.substr(-1) !== '/') {
+      opt.root += '/';
     }
 
     // RequireJS
-    if(options.requirejs && options.node) {
+    if(!opt.requirejs && !opt.node) {
+      js += 'var ' + opt.variable + ' = function(){' + grunt.util.linefeed;
+    }
+    if(opt.requirejs && opt.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
       js +=   'define = require( "amdefine")(module)' + grunt.util.linefeed;
       js += '}' + grunt.util.linefeed;
     }
 
-    if(options.requirejs) {
+    if(opt.requirejs) {
       js += 'define(function() {' + grunt.util.linefeed;
     }
 
@@ -88,7 +91,7 @@
     js += 'String.prototype.encodeHTML=encodeHTMLSource();';
     js += "\n";
 
-    var variables = options.variable.split('.');
+    var variables = opt.variable.split('.');
 
     _.each(variables, function(v) {
       js += 'var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
@@ -98,10 +101,10 @@
     defs.loadfile = function( path ) {
       return fs.readFileSync( path );
     };
-    defs.root = options.root;
+    defs.root = opt.root;
 
     files.map(function(filePath) {
-      var key = options.key(filePath);
+      var key = opt.key(filePath);
       var contents = grunt.file.read(filePath)
         .replace(/\/\/.*\n/g,'')
         .replace(/ *load\(['|"](.*)['|"]\) */g, function(m, _filePath) {
@@ -110,7 +113,7 @@
           if(/^\./.test(_filePath)) {
             _path = path.join(gruntRoot, path.dirname(filePath), _filePath);
           } else {
-            _path = path.join(options.root, _filePath);
+            _path = path.join(opt.root, _filePath);
           }
           return fs.readFileSync(_path);
         })
@@ -118,18 +121,20 @@
         .replace(/'/g, "\\'")
         .replace(/\/\*.*?\*\//gm,'')
 
-      var compile = options.prefix + '\'' + contents + '\', undefined, defs' + options.suffix + ';' + grunt.util.linefeed;
-      if( options.node ) {
-        compile = eval( compile );
-        console.log(key + ' = ' + compile);
-      }
-      js += ' ' + options.variable + "['" + key + "']=" + compile + grunt.util.linefeed;
+      var compile = opt.prefix + '\'' + contents + '\', undefined, defs' + opt.suffix + ';' + grunt.util.linefeed;
+      compile = eval(compile);
+      js += ' ' + opt.variable + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
     });
 
-    if(options.requirejs) {
-      js += 'return ' + options.variable + ';});' + grunt.util.linefeed;
-    } else if(options.node) {
-      js += 'module.exports = ' + options.variable + ';';
+
+    if(!opt.requirejs && !opt.node) {
+      js += 'return ' + opt.variable + ';})()'
+    } else if(opt.requirejs) {
+      js += 'return ' + opt.variable + ';});' + grunt.util.linefeed;
+    } else if(opt.simple && opt.node){
+      js += '';
+    } else if(opt.node) {
+      js += 'module.exports = ' + opt.variable + ';';
     }
 
     return js;

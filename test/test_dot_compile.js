@@ -11,7 +11,7 @@ requirejs.config({
   nodeRequire: require
 });
 
-var nodeRequirejsTmpl, requirejsTmpl, nodeTmpl;
+var nodeRequirejsTmpl, requirejsTmpl, nodeTmpl, regularTmpl;
 
 require(findup('Gruntfile.js'))(grunt);
 
@@ -76,5 +76,27 @@ describe('node-only', function(){
   });
   it('should have a module exports', function() {
     expect(/module\.exports/.test(nodeTmpl.toString())).to.be.true;
+  });
+});
+
+describe('regular', function() {
+  before(function(done) {
+    exec('grunt dot:regular', function(error, stdout, stderr) {
+      regularTmpl = grunt.file.read('test/output/tmpl.js');
+      done();
+    });
+  });
+
+  it('should not have amddefine module', function() {
+    expect(/if\(typeof define/.test(regularTmpl.toString())).to.be.false;
+  });
+  it('should not have a module exports', function() {
+    expect(/module\.exports/.test(regularTmpl.toString())).to.be.false;
+  });
+  it('should have an immediate function', function() {
+    expect(/var tmpl = function\(\)\{/.test(regularTmpl.toString())).to.be.true;
+  });
+  it('should have an immediate function', function() {
+    expect(/return tmpl;\}\)\(\)/.test(regularTmpl.toString())).to.be.true;
   });
 });
