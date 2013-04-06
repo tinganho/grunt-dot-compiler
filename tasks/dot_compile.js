@@ -21,13 +21,6 @@
 
   var gruntRoot = path.dirname(grunt.file.findup('Gruntfile.js')) + '/';
 
-  // Please see the grunt documentation for more information regarding task and
-  // helper creation: https://github.com/gruntjs/grunt/blob/master/docs/toc.md
-
-  // ==========================================================================
-  // TASKS
-  // ==========================================================================
-
   grunt.registerMultiTask('dot', 'prepares and combines any type of template into a script include', function() {
     // grap the filepattern
     var files = grunt.file.expand({filter: 'isFile'}, this.files[0].src);
@@ -39,9 +32,6 @@
     grunt.log.writeln('File "' + this.files[0].dest + '" created.');
   });
 
-  // ==========================================================================
-  // HELPERS
-  // ==========================================================================
   var GruntDotCompiler = {};
   GruntDotCompiler.compileTemplates = function(files, options) {
 
