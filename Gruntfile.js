@@ -34,6 +34,14 @@ module.exports = function(grunt) {
         },
         src: ['test/example/**/*.dot'],
         dest: 'test/output/tmpl.js'
+      },
+
+      regular: {
+        options: {
+            variable: 'tmpl'
+        },
+        src: ['test/example/**/*.dot'],
+        dest: 'test/output/tmpl.js'
       }
 
     },
