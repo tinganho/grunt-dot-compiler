@@ -57,7 +57,7 @@
 
     // RequireJS
     if(!opt.requirejs && !opt.node) {
-      js += 'var ' + opt.variable + ' = function(){' + grunt.util.linefeed;
+      js += 'var ' + opt.variable + ' = (function(){' + grunt.util.linefeed;
     }
     if(opt.requirejs && opt.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
