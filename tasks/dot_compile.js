@@ -61,7 +61,7 @@
     }
     if(opt.requirejs && opt.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
-      js +=   'define = require( "amdefine")(module)' + grunt.util.linefeed;
+      js += 'define = require(\'amdefine\')(module);' + grunt.util.linefeed;
       js += '}' + grunt.util.linefeed;
     }
 
@@ -78,13 +78,12 @@
     js += '};';
     js += '};' + grunt.util.linefeed;
 
-    js += 'String.prototype.encodeHTML=encodeHTMLSource();';
-    js += "\n";
+    js += '  String.prototype.encodeHTML=encodeHTMLSource();' + grunt.util.linefeed;
 
     var variables = opt.variable.split('.');
 
     _.each(variables, function(v) {
-      js += 'var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
+      js += '  var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
     });
 
     var defs = {};
@@ -113,7 +112,7 @@
 
       var compile = opt.prefix + '\'' + contents + '\', undefined, defs' + opt.suffix + ';' + grunt.util.linefeed;
       compile = eval(compile);
-      js += ' ' + opt.variable + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
+      js += '  ' + opt.variable + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
     });
 
 
