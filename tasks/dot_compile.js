@@ -51,13 +51,40 @@
 
     // Sanetize
     opt.variable = opt.variable.replace('window.', '');
+
+    var cutVariables = function (variable) {
+      var variables = variable.split('.'),
+          parent = '',
+          currentVariable = '',
+          output = '';
+
+      for(var i = 0, length = variables.length; i < length; i++) {
+        
+        currentVariable = variables[i];
+        
+        if( i === 0 ){
+          parent = currentVariable;
+          output += '  var ' + parent + ' = ' + parent + ' || {};' + grunt.util.linefeed;
+        } else {
+          parent = parent + '.' + currentVariable;
+          output += '  ' + parent + ' = ' + parent + ' || {};' + grunt.util.linefeed;
+        }
+
+      }
+
+      return output;
+    }
+
+
+
     if(opt.root.substr(-1) !== '/') {
       opt.root += '/';
     }
 
     // RequireJS
     if(!opt.requirejs && !opt.node) {
-      js += 'var ' + opt.variable + ' = (function(){' + grunt.util.linefeed;
+      js += cutVariables(opt.variable);
+      js += opt.variable + ' = (function(){' + grunt.util.linefeed;
     }
     if(opt.requirejs && opt.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
@@ -80,11 +107,7 @@
 
     js += '  String.prototype.encodeHTML=encodeHTMLSource();' + grunt.util.linefeed;
 
-    var variables = opt.variable.split('.');
-
-    _.each(variables, function(v) {
-      js += '  var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
-    });
+    js += cutVariables(opt.variable);
 
     var defs = {};
     defs.loadfile = function( path ) {
