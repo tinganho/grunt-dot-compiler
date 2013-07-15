@@ -94,7 +94,7 @@ describe('regular', function() {
     expect(/module\.exports/.test(regularTmpl.toString())).to.be.false;
   });
   it('should have an immediate function', function() {
-    expect(/var tmpl = \(function\(\)\{/.test(regularTmpl.toString())).to.be.true;
+    expect(/\(function\(\)\{/.test(regularTmpl.toString())).to.be.true;
   });
   it('should have an immediate function', function() {
     expect(/return tmpl;\}\)\(\)/.test(regularTmpl.toString())).to.be.true;

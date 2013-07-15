@@ -57,7 +57,11 @@
 
     // RequireJS
     if(!opt.requirejs && !opt.node) {
-      js += 'var ' + opt.variable + ' = (function(){' + grunt.util.linefeed;
+      if(opt.variable.indexOf('.') !== -1) {
+        js += opt.variable + ' = (function(){' + grunt.util.linefeed;
+      } else {
+        js += 'var ' + opt.variable + ' = (function(){' + grunt.util.linefeed;
+      }
     }
     if(opt.requirejs && opt.node) {
       js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
@@ -80,11 +84,8 @@
 
     js += '  String.prototype.encodeHTML=encodeHTMLSource();' + grunt.util.linefeed;
 
-    var variables = opt.variable.split('.');
+    js += '  var tmpl = {};' + grunt.util.linefeed;
 
-    _.each(variables, function(v) {
-      js += '  var ' + v + '=' + v + '|| {};' + grunt.util.linefeed;
-    });
 
     var defs = {};
     defs.loadfile = function( path ) {
@@ -112,18 +113,18 @@
 
       var compile = opt.prefix + '\'' + contents + '\', undefined, defs' + opt.suffix + ';' + grunt.util.linefeed;
       compile = eval(compile);
-      js += '  ' + opt.variable + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
+      js += '  tmpl' + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
     });
 
 
     if(!opt.requirejs && !opt.node) {
-      js += 'return ' + opt.variable + ';})()'
+      js += 'return tmpl;})()'
     } else if(opt.requirejs) {
-      js += 'return ' + opt.variable + ';});' + grunt.util.linefeed;
+      js += 'return tmpl;});' + grunt.util.linefeed;
     } else if(opt.simple && opt.node){
       js += '';
     } else if(opt.node) {
-      js += 'module.exports = ' + opt.variable + ';';
+      js += 'module.exports = tmpl;';
     }
 
     return js;
