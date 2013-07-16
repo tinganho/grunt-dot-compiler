@@ -71,6 +71,32 @@ You can load partials with the `load` command
   </div>
 ```
 
+#### New in version 0.4
+Have you ever wondered if you can set customize CSS classes in partials without doing it right in a Javascript file, instead doing right on the template?
+
+With version 0.4 you can set `in-template-vars`. Which means, when you load a partial you can set specific variables right in the template.
+
+Define in-template-vars with the following syntax:
+
+`{{$ VARIABLE_NAME:DEFAULT_VALUE }}`// ":DEFAULT_VALUE" is optional
+
+For instance, in test.part:
+```html
+
+<div class="{{$ some:some-var }}"></div>
+```
+Load the partial now in test.dot
+
+```html
+{{##def.customPartial: load('./test.part', { some : 'some-css-class'}) #}}
+
+{{#def.customPartial}}
+```
+And the output will be:
+```html
+<div class="some-css-class"></div>
+```
+
 ## License
 Copyright (c) 2012 Tingan Ho
 Licensed under the MIT license.
