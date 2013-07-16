@@ -19,7 +19,7 @@ module.exports = function(grunt) {
       requirejs: {
         options: {
             variable: 'tmpl',
-            node:      false,
+            node:      true,
             requirejs: true
         },
         src: ['test/example/**/*.dot'],

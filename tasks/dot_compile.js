@@ -64,7 +64,7 @@
       }
     }
     if(opt.requirejs && opt.node) {
-      js += 'if(typeof define !== "function") {' + grunt.util.linefeed;
+      js += 'if(typeof define !== \'function\') {' + grunt.util.linefeed;
       js += 'define = require(\'amdefine\')(module);' + grunt.util.linefeed;
       js += '}' + grunt.util.linefeed;
     }
