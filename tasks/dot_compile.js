@@ -37,7 +37,7 @@
 
     var js = '';
 
-    var opt = _.defaults(opt || {}, {
+    opt = _.defaults(opt || {}, {
       variable: 'tmpl',
       key: function(filepath) {
         return path.basename(filepath, path.extname(filepath));
@@ -97,19 +97,49 @@
       var key = opt.key(filePath);
       var contents = grunt.file.read(filePath)
         .replace(/\/\/.*\n/g,'')
-        .replace(/ *load\(['|"](.*)['|"]\) */g, function(m, _filePath) {
-          var _path;
+        .replace(/load\(['|"](.*?)['|"]\,?\s*(\{\s*(.*?\s*?)+?\})?\s*\)/g, function(m, _filePath, obj) {
+          var _path, customVars = {};
+          if(typeof obj !== 'undefined') {
+            var matches = obj.match(/(\w+)\s*\:(.*)\s*/g);
+            for(var i = 0; i < matches.length; i++) {
+              var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i]);
+              customVars[_matches[1]] = _matches[2].replace(/'|"|\,|\s*/g, '');
+            }
+          }
+
           // Check relative path
           if(/^\./.test(_filePath)) {
             _path = path.join(gruntRoot, path.dirname(filePath), _filePath);
           } else {
             _path = path.join(opt.root, _filePath);
           }
-          return fs.readFileSync(_path);
+
+          var content = fs.readFileSync(_path, 'utf8');
+          if(typeof obj !== 'undefined') {
+            for(var key in customVars) {
+              var regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}');
+              content = content.replace(regex, function(m, key, defaultValue) {
+                if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
+                  return '';
+                } else if(typeof val !== 'undefined') {
+                  return defaultValue;
+                } else {
+                  return customVars[key];
+                }
+              });
+            }
+          }
+
+          return content;
+
+        })
+
+        .replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
+          return p1;
         })
         .replace(cleaner, '')
         .replace(/'/g, "\\'")
-        .replace(/\/\*.*?\*\//gm,'')
+        .replace(/\/\*.*?\*\//gm,'');
 
       var compile = opt.prefix + '\'' + contents + '\', undefined, defs' + opt.suffix + ';' + grunt.util.linefeed;
       compile = eval(compile);
@@ -118,7 +148,7 @@
 
 
     if(!opt.requirejs && !opt.node) {
-      js += 'return tmpl;})()'
+      js += 'return tmpl;})()';
     } else if(opt.requirejs) {
       js += 'return tmpl;});' + grunt.util.linefeed;
     } else if(opt.simple && opt.node){

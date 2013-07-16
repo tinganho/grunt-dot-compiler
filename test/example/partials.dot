@@ -1,7 +1,12 @@
 {{##def.partial1: load('./partial1.part') #}}
 {{##def.partial2: load('test/example/partial2.part') #}}
+{{##def.customizablePartial: load('./custom.part', {
+  test1: 'test1',
+  test2: 'test2'
+}) #}}
 
 <div>
   {{#def.partial1}}
   {{#def.partial2}}
+  {{#def.customizablePartial}}
 </div>

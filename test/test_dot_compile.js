@@ -35,11 +35,16 @@ describe('dot-compile', function() {
   it('should be able to compile templates with hash maps', function() {
     expect(nodeRequirejsTmpl.hashMap({'1': '1', '2': '2', '3': '3'})).to.equal('<div>1</div><div>2</div><div>3</div>');
   });
+
   it('should be able to compile an htmlencode functionality', function() {
     expect(typeof String.prototype.encodeHTML === 'function').to.be.true;
   });
   it('should be able to compile partials', function() {
-    expect(nodeRequirejsTmpl.partials()).to.equal('<div><div></div><div></div></div>');
+    expect(nodeRequirejsTmpl.partials()).to.have.string('partial1');
+    expect(nodeRequirejsTmpl.partials()).to.have.string('partial2');
+  });
+  it('should be able to compile templates with in-template-custom-vars', function() {
+    expect(nodeRequirejsTmpl.partials()).to.have.string('<div class="test1 test2 test3"></div>');
   });
   it('should be able to remove comments during compile', function() {
     expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
