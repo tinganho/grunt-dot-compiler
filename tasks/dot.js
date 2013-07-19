@@ -4,7 +4,7 @@
  */
 
 var path = require('path')
-  , Compiler = require('./Compiler');
+  , Compiler = require('../src/Compiler');
 
 /*
  * Export grunt task
