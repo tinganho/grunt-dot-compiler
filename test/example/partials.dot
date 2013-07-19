@@ -4,9 +4,10 @@
   test1: 'test1',
   test2: 'test2'
 }) #}}
-
+{{##def.partialInPartial: load('./partialInPartials.part') #}}
 <div>
   {{#def.partial1}}
   {{#def.partial2}}
   {{#def.customizablePartial}}
+  {{#def.partialInPartial}}
 </div>

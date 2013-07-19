@@ -52,7 +52,7 @@ Compiler.prototype.getAbsolutePath = function(filePath, loadPath) {
  * Load partials.
  */
 
-Compiler.prototype.loadPartials = function(m, filePath, loadPath, obj) {
+Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
   var customVars = {}, _this = this, pendingPartialLoads = {};
 
   if(typeof obj !== 'undefined') {
@@ -67,7 +67,7 @@ Compiler.prototype.loadPartials = function(m, filePath, loadPath, obj) {
 
   if(this.loadRegex.test(content)) {
     content = content.replace(this.loadRegex, function(m, namespace, loadPath, obj) {
-      var content = _this.loadPartials(m, filePath, loadPath, obj);
+      var content = _this.loadPartial(m, filePath, loadPath, obj);
       pendingPartialLoads[namespace] = content;
       return '';
     });
@@ -121,7 +121,7 @@ Compiler.prototype.getFileContent = function(filePath) {
   var content = grunt.file.read(filePath)
     .replace(/\/\/.*\n/g,'')
     .replace(this.loadRegex, function(m, namespace, loadPath, obj) {
-      var content = _this.loadPartials(m, filePath, loadPath, obj);
+      var content = _this.loadPartial(m, filePath, loadPath, obj);
       pendingPartialLoads[namespace] = content;
       return '';
     })

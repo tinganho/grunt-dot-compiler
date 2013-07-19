@@ -50,6 +50,9 @@ describe('dot-compile', function() {
     expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
     expect(/\/\/.*\n/g.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
   });
+  it('should be compile partials-in-partials', function() {
+    expect(nodeRequirejsTmpl.partials()).to.have.string('can-compile-partial-in-partials');
+  });
 });
 
 describe('requirejs-only', function(){
@@ -59,7 +62,6 @@ describe('requirejs-only', function(){
       done();
     });
   });
-
   it('should not have amddefine module', function() {
     expect(/if\(typeof define/.test(requirejsTmpl.toString())).to.be.false;
   });
