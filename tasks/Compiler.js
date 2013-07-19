@@ -10,7 +10,7 @@ var grunt = require('grunt')
   , doT   = require('dot')
 
 /**
- * Compiler
+ * Compiler.
  */
 
 var Compiler = function(opt) {
@@ -29,7 +29,7 @@ var Compiler = function(opt) {
   }
 
   this.loadRegex = /\{\{\#\#\s*(def\.\w+)\s*\:\s*load\(['|"](.*?)['|"]\,?\s*(\{\s*(.*?\s*?)+?\})?\s*\);?\s*\#?\}\}/g;
- 
+
   _.bindAll(this);
 };
 
@@ -49,7 +49,7 @@ Compiler.prototype.getAbsolutePath = function(filePath, loadPath) {
 };
 
 /**
- * Load partials
+ * Load partials.
  */
 
 Compiler.prototype.loadPartials = function(m, filePath, loadPath, obj) {
@@ -73,8 +73,6 @@ Compiler.prototype.loadPartials = function(m, filePath, loadPath, obj) {
     });
   }
 
-  this.loadPendingPartials(content, pendingPartialLoads);
-
   if(typeof obj !== 'undefined') {
     for(var key in customVars) {
       var regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}');
@@ -90,19 +88,32 @@ Compiler.prototype.loadPartials = function(m, filePath, loadPath, obj) {
     }
   }
 
+  content = this.loadPendingPartials(content, pendingPartialLoads);
+
   return content;
 };
+
+/**
+ * Loads pending partials.
+ */
 
 Compiler.prototype.loadPendingPartials = function(content, pendingPartialLoads) {
   for(var namespace in pendingPartialLoads) {
     content = content.replace(
-      new RegExp('\\{\\{\\#\\s*' + namespace + '\\s*\\}\\}'), 
+      new RegExp('\\{\\{\\#\\s*' + namespace + '\\s*\\}\\}'),
       function(m) {
         return pendingPartialLoads[namespace];
       });
   }
+  content = content.replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
+    return p1;
+  });
   return content;
 };
+
+/**
+ * Get file content.
+ */
 
 Compiler.prototype.getFileContent = function(filePath) {
   var _this = this, pendingPartialLoads = {};
@@ -114,14 +125,16 @@ Compiler.prototype.getFileContent = function(filePath) {
       pendingPartialLoads[namespace] = content;
       return '';
     })
-    .replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
-      return p1;
-    })
     .replace(/^\s+|\s+$|[\r\n]+/gm, '')
     .replace(/\/\*.*?\*\//gm,'');
-  this.loadPendingPartials(content, pendingPartialLoads);
+
+  content = this.loadPendingPartials(content, pendingPartialLoads);
   return content;
 };
+
+/**
+ * Compile templates.
+ */
 
 Compiler.prototype.compileTemplates = function(files) {
 
@@ -136,7 +149,7 @@ Compiler.prototype.compileTemplates = function(files) {
     }
   }
 
-  if(this.opt.requirejs && this.opt.node) {
+  if(this.opt.requirejs && !this.opt.node) {
     js += 'if(typeof define !== \'function\') {' + grunt.util.linefeed;
     js += '  define = require(\'amdefine\')(module);' + grunt.util.linefeed;
     js += '}' + grunt.util.linefeed;
@@ -164,7 +177,6 @@ Compiler.prototype.compileTemplates = function(files) {
       , key      = _this.opt.key(filePath);
     js += '  tmpl' + "['" + key + "']=" + fn + ';' + grunt.util.linefeed;
   });
-
 
   if(!this.opt.requirejs && !this.opt.node) {
     js += 'return tmpl;})()';

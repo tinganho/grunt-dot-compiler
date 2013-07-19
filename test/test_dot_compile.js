@@ -1,4 +1,4 @@
-var chai      = require( 'chai' ),
+var chai      = require('chai'),
     expect    = chai.expect,
     grunt     = require('grunt'),
     findup    = require('findup-sync'),
@@ -44,7 +44,7 @@ describe('dot-compile', function() {
     expect(nodeRequirejsTmpl.partials()).to.have.string('partial2');
   });
   it('should be able to compile templates with in-template-custom-vars', function() {
-    expect(nodeRequirejsTmpl.partials()).to.have.string('<div class="test1 test2 test3"></div>');
+    expect(nodeRequirejsTmpl.partials()).to.have.string('<div class="test1 test2 test-3"></div>');
   });
   it('should be able to remove comments during compile', function() {
     expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
