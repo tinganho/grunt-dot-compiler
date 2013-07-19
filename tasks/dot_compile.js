@@ -12,12 +12,12 @@
 
   grunt.util = grunt.util || grunt.utils;
 
-  var _ = grunt.util._;
-
-  var path    = require('path'),
-      fs      = require('fs'),
-      cleaner = /^\s+|\s+$|[\r\n]+/gm,
-      doT     = require('dot');
+  var path       = require('path')
+    , _          = grunt.util._
+    , fs         = require('fs')
+    , cleaner    = /^\s+|\s+$|[\r\n]+/gm
+    , doT        = require('dot')
+    , loadRegex  = /load\(['|"](.*?)['|"]\,?\s*(\{\s*(.*?\s*?)+?\})?\s*\)/g;
 
   var gruntRoot = path.dirname(grunt.file.findup('Gruntfile.js')) + '/';
 
@@ -33,9 +33,76 @@
   });
 
   var GruntDotCompiler = {};
+  GruntDotCompiler.getAbsolutePath = function(filePath, _filePath, opt) {
+    var _path;
+    // Check relative path
+    if(/^\./.test(_filePath)) {
+      _path = path.join(gruntRoot, path.dirname(filePath), _filePath);
+    } else {
+      _path = path.join(opt.root, _filePath);
+    }
+    return _path;
+  };
+
+  GruntDotCompiler.loadPartials = function(m, filePath, _filePath, obj, opt) {
+    var _path, customVars = {}, _this = this;
+    if(typeof obj !== 'undefined') {
+      var matches = obj.match(/(\w+)\s*\:(.*)\s*/g);
+      for(var i = 0; i < matches.length; i++) {
+        var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i]);
+        customVars[_matches[1]] = _matches[2].replace(/'|"|\,|\s*/g, '');
+      }
+    }
+
+    _path = GruntDotCompiler.getAbsolutePath(filePath, _filePath, opt);
+
+    var content = fs.readFileSync(_path, 'utf8');
+
+    if(loadRegex.test(content)) {
+      content = content.replace(loadRegex, function(m, _filePath, obj) {
+        var content = _this.loadPartials(m, filePath, _filePath, obj, opt);
+        return content;
+      });
+    }
+
+    if(typeof obj !== 'undefined') {
+      for(var key in customVars) {
+        var regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}');
+        content = content.replace(regex, function(m, key, defaultValue) {
+          if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
+            return '';
+          } else if(typeof val !== 'undefined') {
+            return defaultValue;
+          } else {
+            return customVars[key];
+          }
+        });
+      }
+    }
+
+    return content;
+  };
+  GruntDotCompiler.getFileContent = function(filePath, opt) {
+    var _this = this;
+
+    var contents = grunt.file.read(filePath)
+      .replace(/\/\/.*\n/g,'')
+      .replace(loadRegex, function(m, _filePath, obj) {
+        var content = _this.loadPartials(m, filePath, _filePath, obj, opt);
+        return content;
+      })
+      .replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
+        return p1;
+      })
+      .replace(cleaner, '')
+      .replace(/'/g, "\\'")
+      .replace(/\/\*.*?\*\//gm,'');
+
+    return contents;
+  };
   GruntDotCompiler.compileTemplates = function(files, opt) {
 
-    var js = '';
+    var js = '', _this = this;
 
     opt = _.defaults(opt || {}, {
       variable: 'tmpl',
@@ -94,53 +161,8 @@
     defs.root = opt.root;
 
     files.map(function(filePath) {
+      var contents = _this.getFileContent(filePath, opt);
       var key = opt.key(filePath);
-      var contents = grunt.file.read(filePath)
-        .replace(/\/\/.*\n/g,'')
-        .replace(/load\(['|"](.*?)['|"]\,?\s*(\{\s*(.*?\s*?)+?\})?\s*\)/g, function(m, _filePath, obj) {
-          var _path, customVars = {};
-          if(typeof obj !== 'undefined') {
-            var matches = obj.match(/(\w+)\s*\:(.*)\s*/g);
-            for(var i = 0; i < matches.length; i++) {
-              var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i]);
-              customVars[_matches[1]] = _matches[2].replace(/'|"|\,|\s*/g, '');
-            }
-          }
-
-          // Check relative path
-          if(/^\./.test(_filePath)) {
-            _path = path.join(gruntRoot, path.dirname(filePath), _filePath);
-          } else {
-            _path = path.join(opt.root, _filePath);
-          }
-
-          var content = fs.readFileSync(_path, 'utf8');
-          if(typeof obj !== 'undefined') {
-            for(var key in customVars) {
-              var regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}');
-              content = content.replace(regex, function(m, key, defaultValue) {
-                if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
-                  return '';
-                } else if(typeof val !== 'undefined') {
-                  return defaultValue;
-                } else {
-                  return customVars[key];
-                }
-              });
-            }
-          }
-
-          return content;
-
-        })
-
-        .replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
-          return p1;
-        })
-        .replace(cleaner, '')
-        .replace(/'/g, "\\'")
-        .replace(/\/\*.*?\*\//gm,'');
-
       var compile = opt.prefix + '\'' + contents + '\', undefined, defs' + opt.suffix + ';' + grunt.util.linefeed;
       compile = eval(compile);
       js += '  tmpl' + "['" + key + "']=" + compile + ';' + grunt.util.linefeed;
