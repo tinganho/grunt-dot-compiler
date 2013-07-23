@@ -73,12 +73,12 @@ Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
         , value = _matches[2].replace(/'|"|\,|\s*/g, '')
         , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}')
         , content = content.replace(regex, function(m, key, defaultValue) {
-          if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
+          if(typeof value === 'undefined' && typeof defaultValue === 'undefined') {
             return '';
           } else if(typeof val !== 'undefined') {
             return defaultValue;
           } else {
-            return customVars[key];
+            return value;
           }
         });
     }
