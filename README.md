@@ -71,7 +71,7 @@ You can load partials with the `load` command
   </div>
 ```
 
-#### New in version 0.4
+#### New in version 0.5
 Have you ever wondered if you can set customize CSS classes in partials without doing it right in a Javascript file, instead doing right on the template?
 
 With version 0.4 you can set `in-template-vars`. Which means, when you load a partial you can set specific variables right in the template.
@@ -96,6 +96,8 @@ And the output will be:
 ```html
 <div class="some-css-class"></div>
 ```
+#### Partials-in-partials
+You can now create partials in partials and Grunt-dot-compiler will do the mgic for you.
 
 ## License
 Copyright (c) 2012 Tingan Ho
