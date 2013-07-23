@@ -55,14 +55,6 @@ Compiler.prototype.getAbsolutePath = function(filePath, loadPath) {
 Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
   var customVars = {}, _this = this, pendingPartialLoads = {};
 
-  if(typeof obj !== 'undefined') {
-    var matches = obj.match(/(\w+)\s*\:(.*)\s*/g);
-    for(var i = 0; i < matches.length; i++) {
-      var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i]);
-      customVars[_matches[1]] = _matches[2].replace(/'|"|\,|\s*/g, '');
-    }
-  }
-
   var content = fs.readFileSync(this.getAbsolutePath(filePath, loadPath), 'utf8');
 
   if(this.loadRegex.test(content)) {
@@ -74,24 +66,41 @@ Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
   }
 
   if(typeof obj !== 'undefined') {
-    for(var key in customVars) {
-      var regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}');
-      content = content.replace(regex, function(m, key, defaultValue) {
-        if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
-          return '';
-        } else if(typeof val !== 'undefined') {
-          return defaultValue;
-        } else {
-          return customVars[key];
-        }
-      });
+    var matches = obj.match(/(\w+)\s*\:(.*)\s*/g);
+    for(var i = 0; i < matches.length; i++) {
+      var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i])
+        , key = _matches[1]
+        , value = _matches[2].replace(/'|"|\,|\s*/g, '')
+        , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}')
+        , content = content.replace(regex, function(m, key, defaultValue) {
+          if(typeof customVars[key] === 'undefined' && typeof defaultValue === 'undefined') {
+            return '';
+          } else if(typeof val !== 'undefined') {
+            return defaultValue;
+          } else {
+            return customVars[key];
+          }
+        });
     }
   }
 
   content = this.loadPendingPartials(content, pendingPartialLoads);
+  content = this.setDefaultValues(content);
 
   return content;
 };
+
+Compiler.prototype.setDefaultValues = function(content) {
+  content = content
+    .replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
+      return p1;
+    })
+    .replace(/\{\{\$(.*?)\}\}/g, function() {
+      return '';
+    });
+  return content;
+
+}
 
 /**
  * Loads pending partials.
@@ -105,9 +114,6 @@ Compiler.prototype.loadPendingPartials = function(content, pendingPartialLoads) 
         return pendingPartialLoads[namespace];
       });
   }
-  content = content.replace(/\{\{\$\s*\w*?\s*\:\s*(.*?)\s*\}\}/g, function(m, p1) {
-    return p1;
-  });
   return content;
 };
 
