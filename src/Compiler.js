@@ -71,7 +71,7 @@ Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
       var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i])
         , key = _matches[1]
         , value = _matches[2].replace(/'|"|\,|\s*/g, '')
-        , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}')
+        , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}', 'g')
         , content = content.replace(regex, function(m, key, defaultValue) {
           if(typeof value === 'undefined' && typeof defaultValue === 'undefined') {
             return '';
