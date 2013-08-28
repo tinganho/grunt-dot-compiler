@@ -8,6 +8,7 @@ var grunt = require('grunt')
   , path  = require('path')
   , fs    = require('fs')
   , doT   = require('dot')
+  , removeComments = require('./removeComments')
 
 /**
  * Compiler.
@@ -124,8 +125,7 @@ Compiler.prototype.loadPendingPartials = function(content, pendingPartialLoads) 
 Compiler.prototype.getFileContent = function(filePath) {
   var _this = this, pendingPartialLoads = {};
 
-  var content = grunt.file.read(filePath)
-    .replace(/\/\/.*\n/g,'')
+  var content = removeComments(grunt.file.read(filePath))
     .replace(this.loadRegex, function(m, namespace, loadPath, obj) {
       var content = _this.loadPartial(m, filePath, loadPath, obj);
       pendingPartialLoads[namespace] = content;
