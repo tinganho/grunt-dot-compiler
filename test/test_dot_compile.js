@@ -48,7 +48,11 @@ describe('dot-compile', function() {
   });
   it('should be able to remove comments during compile', function() {
     expect(/\/\*.*?\*\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
-    expect(/\/\/.*\n/g.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
+    expect(/^\s*\/\/.*/g.test(nodeRequirejsTmpl.comments.toString())).to.be.false;
+  });
+  it('should not remove http & ftp links', function() {
+    expect(/http:\/\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.true
+    expect(/ftp:\/\//gm.test(nodeRequirejsTmpl.comments.toString())).to.be.true
   });
   it('should be compile partials-in-partials', function() {
     expect(nodeRequirejsTmpl.partials()).to.have.string('can-compile-partial-in-partials');
