@@ -125,7 +125,7 @@ Compiler.prototype.getFileContent = function(filePath) {
   var _this = this, pendingPartialLoads = {};
 
   var content = grunt.file.read(filePath)
-    .replace(/\/\/.*\n/g,'')
+    .replace(/^(?!.*:\/\/$).*\/\/.*/, '')
     .replace(this.loadRegex, function(m, namespace, loadPath, obj) {
       var content = _this.loadPartial(m, filePath, loadPath, obj);
       pendingPartialLoads[namespace] = content;
