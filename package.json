@@ -38,8 +38,7 @@
     "grunt": "~0.4",
     "findup-sync": "~0.1.2",
     "requirejs": "~2.1.5",
-    "escape-html": "~1.0.0",
-    "houdini": "~0.2.0"
+    "escape-html": "~1.0.0"
   },
   "devDependencies": {
     "grunt-contrib-clean": "~0.3.1",
