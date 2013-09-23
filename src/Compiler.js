@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -145,6 +144,10 @@ Compiler.prototype.getFileContent = function(filePath) {
 Compiler.prototype.compileTemplates = function(files) {
 
   var js = '', _this = this;
+  
+  if (this.opt.templateSettings) {
+    doT.templateSetting = grunt.util._.extend(doT.templateSettings, this.opt.templateSettings);
+  }
 
   // RequireJS
   if(!this.opt.requirejs && !this.opt.node) {
@@ -185,7 +188,7 @@ Compiler.prototype.compileTemplates = function(files) {
   });
 
   if(!this.opt.requirejs && !this.opt.node) {
-    js += 'return tmpl;})()';
+    js += 'return tmpl;})();';
   } else if(this.opt.requirejs) {
     js += 'return tmpl;});' + grunt.util.linefeed;
   } else if(this.opt.simple && this.opt.node){
