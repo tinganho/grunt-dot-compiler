@@ -42,7 +42,8 @@ Compiler.prototype.getAbsolutePath = function(filePath, loadPath) {
   // Check relative path
   if(/^\./.test(loadPath)) {
     res = path.join(this.opt.gruntRoot, path.dirname(filePath), loadPath);
-  } else {
+  }
+  else {
     res = path.join(this.opt.root, loadPath);
   }
   return res;
@@ -55,11 +56,13 @@ Compiler.prototype.getAbsolutePath = function(filePath, loadPath) {
 Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
   var customVars = {}, _this = this, pendingPartialLoads = {};
 
-  var content = fs.readFileSync(this.getAbsolutePath(filePath, loadPath), 'utf8');
+  var _filePath = this.getAbsolutePath(filePath, loadPath);
+  var content = fs.readFileSync(_filePath, 'utf8');
 
   if(this.loadRegex.test(content)) {
+    _filePath = _filePath.replace(_this.opt.gruntRoot, '');
     content = content.replace(this.loadRegex, function(m, namespace, loadPath, obj) {
-      var content = _this.loadPartial(m, filePath, loadPath, obj);
+      var content = _this.loadPartial(m, _filePath, loadPath, obj);
       pendingPartialLoads[namespace] = content;
       return '';
     });

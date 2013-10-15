@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "dot": "~1.0.1",
-    "grunt": "~0.4",
+    "grunt": "~0.4.1",
     "findup-sync": "~0.1.2",
     "requirejs": "~2.1.5",
     "escape-html": "~1.0.0"
