@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -188,7 +187,7 @@ Compiler.prototype.compileTemplates = function(files) {
   });
 
   if(!this.opt.requirejs && !this.opt.node) {
-    js += 'return tmpl;})()';
+    js += 'return tmpl;})();';
   } else if(this.opt.requirejs) {
     js += 'return tmpl;});' + grunt.util.linefeed;
   } else if(this.opt.simple && this.opt.node){
