@@ -57,7 +57,7 @@ Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
   var customVars = {}, _this = this, pendingPartialLoads = {};
 
   var _filePath = this.getAbsolutePath(filePath, loadPath);
-  var content = fs.readFileSync(_filePath, 'utf8');
+  var content = fs.readFileSync(_filePath, 'utf8').replace(/<\!\-\-(.|\n)*\!\-\->/g, '');
 
   if(this.loadRegex.test(content)) {
     _filePath = _filePath.replace(_this.opt.gruntRoot, '');
@@ -74,8 +74,9 @@ Compiler.prototype.loadPartial = function(m, filePath, loadPath, obj) {
       var _matches = /(\w+)\s*\:(.*)\s*/g.exec(matches[i])
         , key = _matches[1]
         , value = _matches[2].replace(/'|"|\,|\s*/g, '')
-        , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}', 'g')
-        , content = content.replace(regex, function(m, key, defaultValue) {
+        , regex = new RegExp('\\{\\{\\$\\s*(' + key + ')\\s*\\:?\\s*(.*?)\\s*\\}\\}', 'g');
+
+        content = content.replace(regex, function(m, key, defaultValue) {
           if(typeof value === 'undefined' && typeof defaultValue === 'undefined') {
             return '';
           } else if(typeof val !== 'undefined') {
