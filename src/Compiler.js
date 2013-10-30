@@ -127,6 +127,10 @@ Compiler.prototype.loadPendingPartials = function(content, pendingPartialLoads) 
 Compiler.prototype.getFileContent = function(filePath) {
   var _this = this, pendingPartialLoads = {};
 
+  // Log file path
+  console.log(filePath);
+
+  // Return file content
   var content = grunt.file.read(filePath)
     .replace(/^(?!.*:\/\/$).*\/\/.*/, '')
     .replace(this.loadRegex, function(m, namespace, loadPath, obj) {
