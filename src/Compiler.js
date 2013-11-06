@@ -138,6 +138,7 @@ Compiler.prototype.getFileContent = function(filePath) {
       pendingPartialLoads[namespace] = content;
       return '';
     })
+    .replace(/<\!\-\-(.|\n)*\!\-\->/g, '')
     .replace(/^\s+|\s+$|[\r\n]+/gm, '')
     .replace(/\/\*.*?\*\//gm,'');
 
