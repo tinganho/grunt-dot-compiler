@@ -112,7 +112,7 @@ Compiler.prototype.setDefaultValues = function(content) {
 Compiler.prototype.loadPendingPartials = function(content, pendingPartialLoads) {
   for(var namespace in pendingPartialLoads) {
     content = content.replace(
-      new RegExp('\\{\\{\\#\\s*' + namespace + '\\s*\\}\\}'),
+      new RegExp('\\{\\{\\#\\s*' + namespace + '\\s*\\}\\}', 'g'),
       function(m) {
         return pendingPartialLoads[namespace];
       });
@@ -153,6 +153,7 @@ Compiler.prototype.getFileContent = function(filePath) {
 Compiler.prototype.compileTemplates = function(files) {
 
   var js = '', _this = this;
+  
 
   // RequireJS
   if(!this.opt.requirejs && !this.opt.node) {
