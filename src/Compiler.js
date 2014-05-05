@@ -196,7 +196,7 @@ Compiler.prototype.compileTemplates = function (files) {
       , fn = doT.template(template, _.defaults(_this.opt.dotJS || {}, doT.templateSettings))
       , key = _this.opt.key(filePath);
 
-    if (!this.opt.singleExport) {
+    if (!_this.opt.singleExport) {
       js += '  tmpl' + "['" + key + "']=" + fn + ';' + grunt.util.linefeed;
     } else {
       js += 'var tmpl = ' + fn + ';' + grunt.util.linefeed;
