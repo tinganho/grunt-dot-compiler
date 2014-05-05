@@ -18,8 +18,11 @@ var Compiler = function(opt) {
     node      : false,
     root      : opt.gruntRoot,
     requirejs : false,
+    selfcontained: true,
     key       : function(filepath) {
       return path.basename(filepath, path.extname(filepath));
+    }, dotJS:{
+
     }
   });
   this.opt.variable = opt.variable.replace('window.', '');
@@ -174,21 +177,23 @@ Compiler.prototype.compileTemplates = function(files) {
     js += 'define(function() {' + grunt.util.linefeed;
   }
 
-  // Defining encodeHTML method for the templates
-  js += 'function encodeHTMLSource() {';
-  js += '  var encodeHTMLRules = { "&": "&#38;", "<": "&#60;", ">": "&#62;", \'"\': \'&#34;\', "\'": \'&#39;\', "/": \'&#47;\' },';
-  js += '  matchHTML = /&(?!#?\w+;)|<|>|"|\'|\\//g;';
-  js += '  return function() {';
-  js += '    return this ? this.replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : this;';
-  js += '  };';
-  js += '};' + grunt.util.linefeed;
-  js += 'String.prototype.encodeHTML=encodeHTMLSource();' + grunt.util.linefeed;
+  if (this.opt.selfcontained) {
+    // Defining encodeHTML method for the templates
+    js += 'function encodeHTMLSource() {';
+    js += '  var encodeHTMLRules = { "&": "&#38;", "<": "&#60;", ">": "&#62;", \'"\': \'&#34;\', "\'": \'&#39;\', "/": \'&#47;\' },';
+    js += '  matchHTML = /&(?!#?\w+;)|<|>|"|\'|\\//g;';
+    js += '  return function() {';
+    js += '    return this ? this.replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : this;';
+    js += '  };';
+    js += '};' + grunt.util.linefeed;
+    js += 'String.prototype.encodeHTML=encodeHTMLSource();' + grunt.util.linefeed;
+  }
 
   js += 'var tmpl = {};' + grunt.util.linefeed;
 
   files.map(function(filePath) {
     var template = _this.getFileContent(filePath)
-      , fn       = doT.template(template)
+      , fn       = doT.template(template, _.defaults(_this.opt.dotJS || {}, doT.templateSettings) )
       , key      = _this.opt.key(filePath);
     js += '  tmpl' + "['" + key + "']=" + fn + ';' + grunt.util.linefeed;
   });
