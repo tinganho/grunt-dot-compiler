@@ -134,18 +134,7 @@ Compiler.prototype.getFileContent = function (filePath) {
   console.log(filePath);
 
   // Return file content
-  var content = grunt.file.read(filePath)
-    .replace(/^(?!.*:\/\/$).*\/\/.*/, '')
-    .replace(this.loadRegex, function (m, namespace, loadPath, obj) {
-      var content = _this.loadPartial(m, filePath, loadPath, obj);
-      pendingPartialLoads[namespace] = content;
-      return '';
-    })
-    .replace(/<\!\-\-(.|\n)*\!\-\->/g, '')
-    .replace(/^\s+|\s+$|[\r\n]+/gm, '')
-    .replace(/\/\*.*?\*\//gm, '');
-
-  content = this.loadPendingPartials(content, pendingPartialLoads);
+  var content = grunt.file.read(filePath);
   return content;
 };
 
