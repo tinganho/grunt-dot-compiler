@@ -28,7 +28,7 @@
   ],
   "main": "Gruntfile.js",
   "engines": {
-    "node": "*"
+    "node": ">=0.10.0"
   },
   "scripts": {
     "test": "bin/test"
