@@ -14,11 +14,12 @@ var grunt = require('grunt')
 
 var Compiler = function(opt) {
   this.opt = _.defaults(opt || {}, {
-    variable  : 'tmpl',
-    node      : false,
-    root      : opt.gruntRoot,
-    requirejs : false,
-    key       : function(filepath) {
+    variable      : 'tmpl',
+    node          : false,
+    root          : opt.gruntRoot,
+    requirejs     : false,
+    shareSnippets : false,
+    key           : function(filepath) {
       return path.basename(filepath, path.extname(filepath));
     }
   });
@@ -152,8 +153,8 @@ Compiler.prototype.getFileContent = function(filePath) {
 
 Compiler.prototype.compileTemplates = function(files) {
 
-  var js = '', _this = this;
-  
+  var js = '', _this = this,
+    def = this.opt.shareSnippets ? {} : null;
 
   // RequireJS
   if(!this.opt.requirejs && !this.opt.node) {
@@ -188,7 +189,7 @@ Compiler.prototype.compileTemplates = function(files) {
 
   files.map(function(filePath) {
     var template = _this.getFileContent(filePath)
-      , fn       = doT.template(template)
+      , fn       = doT.template(template, null, def)
       , key      = _this.opt.key(filePath);
     js += '  tmpl' + "['" + key + "']=" + fn + ';' + grunt.util.linefeed;
   });
